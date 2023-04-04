@@ -1,0 +1,148 @@
+body {
+  background: #fafafa;
+  color: #333333;
+  margin-top: 5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+
+ul {
+  margin: 0;
+}
+
+.bg-steel {
+  background-color: #5f788a;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.article-title {
+  color: #444444;
+}
+
+a.article-title:hover {
+  color: #428bca;
+  text-decoration: none;
+}
+
+.article-content {
+  white-space: pre-line;
+}
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
+
+html {
+    margin-left: calc(100vw - 100%);
+    margin-right: 0;
+    overflow: auto;
+    overflow-y: scroll;
+}
+
+.table tbody>tr.darkborder>td {
+  border-top: 2px solid grey;
+}
+
+.asteriskField {
+  display: none;
+}
+
+
+.medium{font-size:90%}
+
+.left {
+  float: left;
+}
+.right {
+  float: right;
+}
+
+.grey {
+  background-color: #cbd5db;
+}
+
+
+/* Style the button that is used to open and close the collapsible content */
+.collapsible {
+  /* background-color: #eee; */
+  /* color: #444; */
+  cursor: pointer;
+  padding: 18px;
+  /*width: 100%;
+  border: none;*/
+  text-align: left;
+  /*outline: none;*/
+  font-size: 15px;
+}
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+/*.active, .collapsible:hover {
+   background-color: #ccc; 
+}*/
+
+/* Style the collapsible content. Note: hidden by default */
+
+
+
+pre {
+  font-family:  "Roboto","Lucida Grande","DejaVu Sans","Bitstream Vera Sans",Verdana,Arial,sans-serif;
+	width: 100%;                          /* specify width  */
+	white-space: pre-wrap;                 /* CSS3 browsers  */
+	white-space: -moz-pre-wrap !important; /* 1999+ Mozilla  */
+	white-space: -pre-wrap;                /* Opera 4 thru 6 */
+	white-space: -o-pre-wrap;              /* Opera 7 and up */
+	word-wrap: break-word;                 /* IE 5.5+ and up */
+	/* overflow-x: auto; */                /* Firefox 2 only */
+	/* width: 99%; */		       /* only if needed */
+	}

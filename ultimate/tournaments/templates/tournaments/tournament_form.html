@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block extrahead %}
+
+{% endblock %}
+
+{% block breadcrumb %}
+    <div class="container">
+        <ol class="breadcrumb my-4">
+            <li class="breadcrumb-item"><a href="{% url 'tournaments' %}">Tournaments</a></li>
+            <li class="breadcrumb-item active">New tournament</li>
+        </ol>
+    </div>
+{% endblock %}
+
+{% block content %}
+<script>
+	function ToggleMailLink(){
+    
+	var e = document.getElementById("purpose");
+	console.log("yes");
+	console.log(""+document.getElementById("mailtoggle").selected);
+      if ( document.getElementById("mailtoggle").selected)
+      //.....................^.......
+      {
+        $("#id_mail").show();
+		$("#id_link").hide();
+      }
+      else
+      {
+        $("#id_link").show();
+		$("#id_mail").hide();
+      }
+    
+	
+};
+</script>
+
+	<div class="content-section">
+		<form method="POST">
+			{% csrf_token %}
+			
+				<legend class="border-bottom mb-4">New tournament</legend>
+				{# bootstrap_form form #}
+				<div class="row">
+					<div class="col-6">{{ form.title|as_crispy_field  }}</div>
+					<div class="col-6">{{ form.location|as_crispy_field }}</div>
+				</div>
+				<div class="row">
+					<div class="col-6">{{ form.contact|as_crispy_field  }}</div>
+						<div class="col-6">{{ form.contact_Mail|as_crispy_field }}</div>
+				</div>
+				<div class="row">
+					<div class="col-6">{{ form.start_Date|as_crispy_field }}</div>
+					<div class="col-6">{{ form.end_Date|as_crispy_field }}</div>
+				</div>
+				<div class="row">
+					<span class="col-6">
+						<span class="col-12">
+							<div class="form-group">
+								<label for="purpose" class="form-label">How to register?</label>
+								<select name="type" class="select form-select" id="purpose" onchange="ToggleMailLink()">
+									<option value="m" id="mailtoggle">Mail</option>
+									<option value="l">Link</option>
+								</select>
+							</div>
+						</span>
+					</span>
+					<span class ="col-6">
+						<span class="col-12" id="id_mail">{{ form.mail|as_crispy_field  }}</span>
+						<span class="col-12" id="id_link" style="display: none;">{{ form.link|as_crispy_field  }}</span>
+					</span>
+				</div>
+				
+				
+
+				{{ form.type|as_crispy_field }}
+				
+				<div class="row">
+					<div class="col-3">{{ form.mode|as_crispy_field }}</div>
+					<div class="col-3">{{ form.surface|as_crispy_field }}</div>
+					<div class="col-3">{{ form.gender|as_crispy_field }}</div>
+					<div class="col-3">{{ form.style|as_crispy_field }}</div>
+				</div>
+				<!-- <div class="form-group">
+	<a class="btn btn-outline-info" onclick="myFunction()">Add mode</a>
+				</div>
+				<div class="row" id="mode2" style="display: none">
+					<div class="col-3">{{ form.mode|as_crispy_field }}</div>
+					<div class="col-3">{{ form.surface|as_crispy_field }}</div>
+					<div class="col-3">{{ form.gender|as_crispy_field }}</div>
+					<div class="col-3">{{ form.style|as_crispy_field }}</div>
+					
+				</div>
+				-->
+				<div class="form-group">
+					<div>{{ form.description|as_crispy_field}}</div>
+
+				</div> 
+				<div class="form-group">
+					<button class="sm btn btn-outline-info" type="submit">Create</button>
+				</div>
+		</form>
+	</div>
+{% endblock content %}
+<script>
+function myFunction() {
+  var x = document.getElementById("mode2");
+  if (x.style.display === "none") {
+    x.style.display = "flex";
+  } else {
+    x.style.display = "none";
+  }
+}
+
+</script>

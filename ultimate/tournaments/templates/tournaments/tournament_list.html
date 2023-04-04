@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+{% load mathfilters %}
+
+
+{% block title %}
+Tournaments
+{% endblock %}
+{% block breadcrumb %}
+    <div class="container">
+        <ol class="breadcrumb my-4">
+              <li class="breadcrumb-item active">Tournaments</li>
+        </ol>
+    </div>
+{% endblock %}
+{% block content %}
+
+<div class="container">
+{% for tournament in tournaments %}
+	{% if tournament.approved == True or user.is_superuser %}
+		{% if tournament.new_year %}
+			<div class="row"><div class="col-12">{{tournament.start_Date|date:'Y'}}</div></div>
+		{% endif %}
+		{% if tournament.new_week %}
+			<!--<tr class="darkborder ">-->
+		{% else %}
+			<!--<tr>-->
+		{% endif %}
+		<div class="row border-bottom border-top">
+			<div class="col-4 col-md-3 collapsible">
+				<a class="article-title" href="{% url 'tournament-detail' tournament.id %}">{{ tournament.title }}</a>
+				<div class="small text-muted">{{tournament.location}}</div>
+			</div>
+
+			{% with day1=tournament.start_Date|date:'d' day2=tournament.end_Date|date:'d' month1=tournament.start_Date|date:'m' month2=tournament.end_Date|date:'m' %}
+			{% if day2|sub:day1 == 0%}
+			<div align="left" class="col-3 collapsible" >
+				<span class="no-break medium">{{ tournament.start_Date|date:'d. M' }}</span> 
+			</div>
+			{% else %}
+				{% if month2|sub:month1 == 1%}
+			<div align="left" class="col-3 collapsible" >
+				<span class="no-break medium"> {{ tournament.start_Date|date:'d. M' }} - </span> 
+				<span class="no-break medium">{{ tournament.end_Date|date:'d. M' }}</span>
+			</div>
+				{% else %}
+			<div align="left" class="col-3 collapsible" >
+				<span class="no-break medium">{{ tournament.start_Date|date:'d.' }} - {{ tournament.end_Date|date:'d.' }} </span> 
+				<span class="medium no-break">{{ tournament.end_Date|date:'M' }}</span>
+			</div>
+				{% endif %}
+			{% endif %}
+			{% endwith %}
+			{% if tournament.surface == 'b' %}
+			<div class ="col-3  collapsible" style="background-image: url('/media/beach.svg');
+			background-size: 43px; background-position: 93% 105% ; background-repeat: no-repeat;">
+				<span class="medium" >
+					<span class="no-break">{{tournament.get_mode_display }} </span> 
+					<span class="no-break">{{tournament.get_gender_display }}</span>
+				</span>
+				<div class="small text-muted">{{tournament.get_style_display}}</div>
+			</div>
+			{% elif tournament.surface == 'i' %}
+			<div class ="col-3  collapsible" style="background-image: url('/media/indoor.svg'); 
+			background-size: 30px; background-position: 90% 95%; background-repeat: no-repeat;">
+				<span class="medium" >
+					<span class="no-break">{{tournament.get_mode_display }} </span> 
+					<span class="no-break">{{tournament.get_gender_display }}</span>
+				</span>
+				<div class="small text-muted">{{tournament.get_style_display}}</div>
+			</div>
+			{% else %}
+			<div class ="col-3  collapsible" style="background-image: url('/media/grass.svg'); 
+			background-size: 50px; background-position: 95% 145%; background-repeat: no-repeat;">
+				<span class="medium" >
+					<span class="no-break">{{tournament.get_mode_display }} </span> 
+					<span class="no-break">{{tournament.get_gender_display }}</span>
+				</span>
+				<div class="small text-muted">{{tournament.get_style_display}}</div>
+			</div>
+			{% endif %}
+
+			
+			<div class="col-2 col-md-3">
+				<span class=" " style="position: relative;">
+					{% if tournament.approved %}
+						{% if tournament.mail != "" %}
+						<button data-hex="{{tournament.mail}}{{tournament.link}}" 
+						style="margin: 0;position: absolute;top: 0%;transform: translateY(70%);"  
+						class="tooltip1 sm btn btn-sm btn-primary" onclick=copyFunction() onmouseout="outFunc()" 
+						value="{{tournament.mail}}{{tournament.link}}" id={{tournament.id}}>
+							<span class="tooltiptext1" id="{{tournament.id}}span">Email-Adresse kopieren</span>
+							<span class="no-break" id={{tournament.id}}>
+								<span class="d-none d-lg-inline" id={{tournament.id}}>Anmeldung </span>
+								<img height=20px color="white" src="/media/mail.svg" id={{tournament.id}}>&nbsp;
+
+							</span>
+						</button>
+						{% elif tournament.link != "" %}
+						<a href="{{tournament.link}}" style="margin: 0;position: absolute;top: 50%;transform: translateY(70%);" 
+						class="btn-sm btn sm btn-primary tooltip1" target="_blank">
+							<span class="tooltiptext1" id="{{tournament.id}}span">Link öffnen</span>
+							<span class="no-break"><span class="d-none d-lg-inline">Anmeldung </span>
+							<img height=20px color="white" src="/media/openwindow.svg">&nbsp;
+
+							</span>
+						</a>
+						{% endif %}
+					{% elif user.is_superuser %}
+						<a href=" {% url  'tournament-approve' tournament.id %}" style="margin: 0;position: absolute;top: 0%;transform: translateY(70%);" class="sm btn btn-sm btn-success">
+							Approve
+						</a>
+						
+					{% endif %}
+					
+					{% if user.is_superuser %}
+					<a href="{% url 'admin:tournaments_tournament_change' tournament.id %}" 
+					style="margin: 0;position: absolute;top: 0%;transform: translateY(72%) translateX(280%);" 
+					class="btn btn-primary sm btn-sm">Edit</a>
+					{% endif %}
+					
+					
+					
+				</span>
+				
+			</div>
+
+		</div>
+			
+			
+		<div class="row" style="display: none;">
+			<div class="content col-12">
+				<div class="container">
+					<div class="row">
+						<div class ="col-6 text-muted small" id="myInput"><!--{{tournament.contact}}--></div>
+						<!--<span class ="col-3">{{tournament.mail}}</span>-->
+						<div class ="col-6"></div>
+					</div>	
+					<div class="row">
+						<div class="col-12 pt-3">{{tournament.description|safe}}</div>
+					</div>
+				
+				</div>
+			</div>
+		</div>
+	{% endif %}
+{% endfor %}
+</div>
+
+<script>
+const copyBtns = [...document.getElementsByClassName('copyButton')]
+
+let previous = null
+
+copyBtns.forEach(btn=> btn.addEventListener('click', ()=>{
+    const color = btn.getAttribute('data-hex')
+    navigator.clipboard.writeText(color)
+    
+    navigator.clipboard.readText().then(clipText=>{
+        btn.textContent = `copied`
+    })
+
+    //if (previous) {
+    //    previous.textContent = 'click'
+    //}
+    previous = btn
+}))
+
+// data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top"
+
+var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+
+
+function copyFunction() {
+	event.stopPropagation();
+  // Get the text field
+  var copyText = document.getElementById(event.target.id);
+
+  //var tooltip = document.getElementById(event.target.firstChild.id);
+  var tooltip = document.getElementById(event.target.id+"span");
+  tooltip.innerHTML = "kopiert!";
+
+  // Copy the text inside the text field
+  navigator.clipboard.writeText(copyText.value);
+  
+  // Alert the copied text
+  //alert("Copied the text: " +"   "+ copyText.value);
+}
+
+function outFunc() {
+	event.stopPropagation();
+  var tooltip = document.getElementById(event.target.id+"span");
+  tooltip.innerHTML = "Email-Adresse kopieren";
+}
+
+</script>
+<style>
+	.tooltip1 {
+		position: relative;
+	}
+
+	.tooltip1 .tooltiptext1 {
+	  visibility: hidden;
+	  width: 140px;
+	  background-color: #555;
+	  color: #fff;
+	  text-align: center;
+	  border-radius: 6px;
+	  padding: 5px;
+	  position: absolute;
+	  z-index: 1;
+	  bottom: 150%;
+	  left: 50%;
+	  margin-left: -75px;
+	  opacity: 0;
+	  transition: opacity 0.3s;
+	}
+	
+	.tooltip1 .tooltiptext1::after {
+	  content: "";
+	  position: absolute;
+	  top: 100%;
+	  left: 50%;
+	  margin-left: -5px;
+	  border-width: 5px;
+	  border-style: solid;
+	  border-color: #555 transparent transparent transparent;
+	}
+	
+	.tooltip1:hover .tooltiptext1 {
+	  visibility: visible;
+	  opacity: 1;
+	}
+
+	.no-break {
+  white-space: nowrap;
+	}
+	</style>
+
+	<!-- {% if is_paginated %}
+		{% if page_obj.previous_page_number > 1 %}
+			<a class ="btn btn-outline-info mb-4" href="?page=1">1</a>
+			<!--<a class ="btn btn-outline-info mb-4" href="?page= page_obj.previous_page_number }}">Previous</a>-->
+	<!--	{% endif %}
+        {% if page_obj.previous_page_number > 2 %}
+            ...
+        {% endif %}
+		{% for num in page_obj.paginator.page_range %}
+			{% if page_obj.number == num %}
+				<a class ="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+			{% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %}
+				<a class ="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+			{% endif %}
+		{% endfor %}
+        {% if page_obj.next_page_number|add:'1' < page_obj.paginator.num_pages %}
+            ...
+        {% endif %}
+		{% if page_obj.next_page_number|add:'0' < page_obj.paginator.num_pages %}
+			<!--<a class ="btn btn-outline-info mb-4" href="?page= page_obj.next_page_number }}">Next</a>-->
+		<!--	<a class ="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+		{% endif %}
+	{% endif %} -->
+{% endblock content %}

@@ -1,0 +1,132 @@
+{% load sidebar %}
+{% load static %}
+{% load bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %} <!--  jquery='full' -->
+
+{% block extrahead %}
+{% endblock %}
+<!DOCTYPE html>
+<html>
+<head>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">-->
+	<!--<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">-->
+	<!--<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>-->
+	<script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
+
+	<!--<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.4/dist/css/datepicker.min.css'>   -->
+	{{ form.media }}
+    <link rel="stylesheet" type="text/css" href="{% static 'main.css' %}">
+    <title>UltimateDjango - {% block title %}{% endblock title %}</title>
+
+</head>
+<body>
+	
+	  <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+	    <div class="navbar-header ms-4">
+			<div class="container">
+	      		<a class="navbar-brand" href="{% url 'blog' %}">Ultimate Germany</a>
+			</div>
+		</div>
+	      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+	      <span class="navbar-toggler-icon"></span>
+	      </button>
+	      <div class="collapse navbar-collapse" id="navbarToggle">
+	        <!--<div class="navbar-nav mr-auto">
+				<a class="nav-item nav-link" href="{% url 'blog' %}">Home</a>
+			  	<a class="nav-item nav-link" href="{% url 'board-home' %}">Boards</a>
+				<a class="nav-item nav-link" href="{% url 'wurfpost' %}">Wurfpost</a>
+			  	<a class="nav-item nav-link" href="{% url 'tournaments' %}">Tournaments</a>
+				<a class="nav-item nav-link" href="{% url 'new-tournament' %}">New Tournament</a>
+
+	        </div>-->
+			<ul class="nav navbar-nav">
+				<li class="nav-item" ><a class="nav-link" href="{% url 'blog' %}">Home</a></li>
+			  	<li class="nav-item" ><a class="nav-link" href="{% url 'board-home' %}">Boards</a></li>
+				<li class="nav-item" ><a class="nav-link" href="{% url 'wurfpost' %}">Wurfpost</a></li>
+			  	<li class="nav-item" ><a class="nav-link" href="{% url 'tournaments' %}">Tournaments</a></li>
+				<li class="nav-item" ><a class="nav-link" href="{% url 'new-tournament' %}">New Tournament</a></li>
+
+			</ul>
+	        <!-- Navbar Right Side -->
+	        <ul class="nav navbar-nav navbar-right ms-auto me-4"> 
+	          {% if user.is_authenticated %}
+			  <li class="nav-item" ><a class="nav-link" href="{% url 'profile' %}">Profile</a></li>
+				<li class="nav-item" ><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+	          {% else %}
+			  <li class="nav-item" ><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+				<li class="nav-item" ><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+	          {% endif %}
+			</ul>
+	      </div>
+		  
+	  </nav>
+	
+        {% block breadcrumb %}
+        {% endblock %}
+	
+	
+	<div class="container">
+	  <div class="row">
+	    <div class="col-md-8">
+	      {% if messages %}
+	        {% for message in messages %}
+	          <div class="alert alert-{{ message.tags }}">
+	          	{{ message }}
+	          </div>
+	        {% endfor %}
+	      {% endif %}
+		  <main role="main">
+		  {% block content %}{% endblock %}
+		</main>
+	    </div>
+	    <div class="col-md-4">
+	    	{% if user.is_authenticated %}
+			
+	      {% sidebar %}
+	      {% endif %}
+	    </div>
+	  </div>
+	</div>
+	<!-- Optional JavaScript -->
+<script>
+function myFunction() {
+  var x = document.getElementById("mode2");
+  if (x.style.display == "none") {
+    x.style.display = "flex";
+  } else {
+    x.style.display = "none";
+  }
+}
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.parentNode.nextElementSibling;
+	console.log(this);
+	console.log(this.parentNode);
+	console.log(this.parentNode.nextElementSibling);
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+</script>
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <!--<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+	<!-- <script src="{% static '/javascript/collapsible.js' %}" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script> -->
+
+</body>
+</html>
+
+

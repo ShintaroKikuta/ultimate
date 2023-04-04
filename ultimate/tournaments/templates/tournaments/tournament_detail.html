@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}
+Tournaments
+{% endblock %}
+{% block breadcrumb %}
+    <div class="container">
+        <ol class="breadcrumb my-4">
+        	<li class="breadcrumb-item"><a href="{% url 'tournaments' %}">Tournaments</a></li>
+            <li class="breadcrumb-item active">{{object.title}}</li>
+        </ol>
+    </div>
+{% endblock %}
+{% block content %}
+<div class="content-section">
+	<legend class="border-bottom mb-4">{{object.title}}</legend>
+	{{tournament.location}},
+	{{tournament.start_datetime|date:'d.m.y' }} - {{ tournament.end_datetime|date:'d.m.y' }}<br />
+	{{tournament.get_mode_display }} {{ tournament.get_gender_display }}
+    {{ tournament.description }}
+</div>
+
+{% endblock content %}
+

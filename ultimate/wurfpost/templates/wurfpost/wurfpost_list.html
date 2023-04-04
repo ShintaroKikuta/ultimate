@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load mathfilters %}
+
+
+{% block title %}
+Tournaments
+{% endblock %}
+{% block breadcrumb %}
+    <div class="container">
+        <ol class="breadcrumb my-4">
+              <li class="breadcrumb-item active">Wurfpost</li>
+        </ol>
+    </div>
+{% endblock %}
+{% block content %}
+<table class="table table-sm table-hover">
+	<thead class="thead-light">
+	<!-- <tr><th scope="col">Tournament</th><th scope="col">Date</th><th scope="col">Mode</th></tr>-->
+	</thead>
+	{% for post in wurfpost %}
+		
+            <tr class="collapsible">
+    	
+				<td class ="col-4">{{post.title}}</td>
+        </tr>
+		<tr class="content"><td class="col-12">{{post.description|safe}}</td></tr>
+		<!-- <tr><td colspan="3" class="col-12">sdsdsds</td></tr> -->
+    {% endfor %}
+</table>
+
+
+	{% if is_paginated %}
+		{% if page_obj.previous_page_number > 1 %}
+			<a class ="btn btn-outline-info mb-4" href="?page=1">1</a>
+			<!--<a class ="btn btn-outline-info mb-4" href="?page= page_obj.previous_page_number }}">Previous</a>-->
+		{% endif %}
+        {% if page_obj.previous_page_number > 2 %}
+            ...
+        {% endif %}
+		{% for num in page_obj.paginator.page_range %}
+			{% if page_obj.number == num %}
+				<a class ="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+			{% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %}
+				<a class ="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+			{% endif %}
+		{% endfor %}
+        {% if page_obj.next_page_number|add:'1' < page_obj.paginator.num_pages %}
+            ...
+        {% endif %}
+		{% if page_obj.next_page_number|add:'0' < page_obj.paginator.num_pages %}
+			<!--<a class ="btn btn-outline-info mb-4" href="?page= page_obj.next_page_number }}">Next</a>-->
+			<a class ="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+		{% endif %}
+	{% endif %}
+{% endblock content %}
+

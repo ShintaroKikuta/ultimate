@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}
+Blog
+{% endblock %}
+{% block breadcrumb %}
+    <div class="container">
+        <ol class="breadcrumb my-4">
+              <li class="breadcrumb-item active">Blog</li>
+        </ol>
+    </div>
+{% endblock %}
+{% block content %}
+
+	{% for post in posts %}
+	<article class="media content-section">
+	  <div class="m-1"><img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}"></div>
+	  <div class="media-body">
+	    <div class="article-metadata p-1">
+	      <a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ post.author }}</a>
+	      <small class="text-muted"> &nbsp;&nbsp;{{ post.date_posted|date:"F d, Y" }}</small>
+	    </div>
+	    <h2 class="mt-2"><a class="article-title" href="{% url 'post-detail' post.id %}">{{ post.title }}</a></h2>
+	    <p class="article-content">{{ post.content }}</p>
+	  </div>
+	</article>
+	{% endfor %}
+	{% if is_paginated %}
+		{% if page_obj.previous_page_number > 1 %}
+			<a class ="btn btn-outline-info mb-4" href="?page=1">1</a>
+			<!--<a class ="btn btn-outline-info mb-4" href="?page= page_obj.previous_page_number }}">Previous</a>-->
+		{% endif %}
+        {% if page_obj.previous_page_number > 2 %}
+            <a class ="btn btn-outline-info mb-4" href="">...</a>
+        {% endif %}
+		{% for num in page_obj.paginator.page_range %}
+			{% if page_obj.number == num %}
+				<a class ="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+			{% elif num > page_obj.number|add:'-2' and num < page_obj.number|add:'2' %}
+				<a class ="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+			{% endif %}
+		{% endfor %}
+        {% if page_obj.next_page_number|add:'1' < page_obj.paginator.num_pages %}
+            <a class ="btn btn-outline-info mb-4" href="">...</a>
+        {% endif %}
+		{% if page_obj.next_page_number|add:'0' < page_obj.paginator.num_pages %}
+			<!--<a class ="btn btn-outline-info mb-4" href="?page= page_obj.next_page_number }}">Next</a>-->
+			<a class ="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+		{% endif %}
+	{% endif %}
+            <a class="btn btn-primary mb-4 mr-1 float-right" href="{% url 'post-create' %}">New Blog Post</a>
+{% endblock content %}
+

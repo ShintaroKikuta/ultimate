@@ -1,0 +1,22 @@
+from django.db import models
+from django.utils import timezone
+from django.contrib.auth.models import User
+from django.urls import reverse
+
+# Create your models here.
+
+class BlogPost(models.Model):
+	title = models.CharField(max_length=100)
+	content = models.TextField()
+	#date_modified = models.DateTimeField(auto_now = True)
+	#date_posted = models.DateTimeField(auto_now_add = True)
+	date_posted = models.DateTimeField(default=timezone.now)
+	# on_delete=models.CASCADE: if a user is deleted, his/her posts are deleted too
+	#author = models.ForeignKey(User, on_delete=models.CASCADE)
+	author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+
+	def __str__(self):
+		return self.title
+
+	def get_absolute_url(self):
+		return reverse('post-detail', kwargs={'pk': self.pk})
